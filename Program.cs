@@ -1,7 +1,20 @@
+using Interview.DependencyInjection.InterfacesDI;
+using Interview.DependencyInjection.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// new instance for per request
+builder.Services.AddTransient<ITransientService, TransientService>();
+
+// single instance for http request
+builder.Services.AddScoped<IScopedService, ScopedService>();
+
+//single instance for entire application
+builder.Services.AddSingleton<ISingletonService, SingletonService>();
+
 
 var app = builder.Build();
 
