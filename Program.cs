@@ -11,6 +11,7 @@ builder.Services.AddTransient<ITransientService, TransientService>();
 
 // single instance for http request
 builder.Services.AddScoped<IScopedService, ScopedService>();
+builder.Services.Decorate<IScopedService, LogScopedService>();
 
 //single instance for entire application
 builder.Services.AddSingleton<ISingletonService, SingletonService>();
