@@ -42,7 +42,8 @@ namespace Interview.DependencyInjection.API
             IScopedService scopedService,
             ITransientService transientService2,
             ISingletonService singletonService2,
-            IScopedService scopedService2)
+            IScopedService scopedService2,
+            ILogger<ValuesController> logger)
         {
             _transientService = transientService;
             _singletonService = singletonService;
@@ -50,6 +51,7 @@ namespace Interview.DependencyInjection.API
             _transientService2 = transientService2;
             _singletonService2 = singletonService2;
             _scopedService2 = scopedService2;
+            _logger = logger;
         }
 
 
@@ -76,6 +78,33 @@ namespace Interview.DependencyInjection.API
                         + $"Scoped intance:{_scopedService.GetOperationId()}\n"
                         + $"Singleton intance:{_singletonService.GetOperationId()}\n";
 
+        }
+
+
+        /// <summary>
+        /// Delegate they hold the reference of a method or function and then call that method for execute 
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
+
+
+        public delegate int MathOperation(int x, int y);
+
+
+        public static int Add(int x, int y) => x + y;
+
+        public static int Multiply(int x, int y) => x * y;
+
+        [HttpGet]
+        [Route("MathOperations")]
+        public IActionResult MathOperations()
+        {
+            MathOperation math = Add;
+            _logger.LogInformation(math(1, 4).ToString());
+            MathOperation math2 = Multiply;
+            _logger.LogInformation(math2(10, 4).ToString());
+            return Ok();
         }
     }
 }
